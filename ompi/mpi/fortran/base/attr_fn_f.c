@@ -1,3 +1,4 @@
+/* -*- Mode: C; c-basic-offset:4 ; indent-tabs-mode:nil -*- */
 /*
  * Copyright (c) 2004-2005 The Trustees of Indiana University and Indiana
  *                         University Research and Technology
@@ -10,6 +11,8 @@
  * Copyright (c) 2004-2005 The Regents of the University of California.
  *                         All rights reserved.
  * Copyright (c) 2006-2012 Cisco Systems, Inc.  All rights reserved.
+ * Copyright (c) 2013      Los Alamos National Security, LLC. All rights
+ *                         reserved.
  * $COPYRIGHT$
  * 
  * Additional copyrights may follow
@@ -47,6 +50,16 @@
 #pragma weak mpi_comm_dup_fn   = ompi_comm_dup_fn_f
 #pragma weak mpi_comm_dup_fn_  = ompi_comm_dup_fn_f
 #pragma weak mpi_comm_dup_fn__ = ompi_comm_dup_fn_f
+
+#pragma weak MPI_COMM_DUP_WITH_INFO_FN   = ompi_comm_dup_with_info_fn_f
+#pragma weak mpi_comm_dup_with_info_fn   = ompi_comm_dup_with_info_fn_f
+#pragma weak mpi_comm_dup_with_info_fn_  = ompi_comm_dup_with_info_fn_f
+#pragma weak mpi_comm_dup_with_info_fn__ = ompi_comm_dup_with_info_fn_f
+
+#pragma weak MPI_COMM_IDUP_FN   = ompi_comm_idup_fn_f
+#pragma weak mpi_comm_idup_fn   = ompi_comm_idup_fn_f
+#pragma weak mpi_comm_idup_fn_  = ompi_comm_idup_fn_f
+#pragma weak mpi_comm_idup_fn__ = ompi_comm_idup_fn_f
 
 #pragma weak MPI_COMM_NULL_COPY_FN   = ompi_comm_null_copy_fn_f
 #pragma weak mpi_comm_null_copy_fn   = ompi_comm_null_copy_fn_f
@@ -126,6 +139,20 @@ OMPI_GENERATE_F77_BINDINGS( MPI_COMM_DUP_FN,
                             ompi_comm_dup_fn_f,
                             (MPI_Fint* comm, MPI_Fint* comm_keyval, MPI_Aint* extra_state, MPI_Aint* attribute_val_in, MPI_Aint* attribute_val_out, ompi_fortran_logical_t* flag, MPI_Fint* ierr),
                             (comm, comm_keyval, extra_state, attribute_val_in, attribute_val_out, flag, ierr) )
+OMPI_GENERATE_F77_BINDINGS( MPI_COMM_DUP_WITH_INFO_FN,
+                            mpi_comm_dup_with_info_fn,
+                            mpi_comm_dup_with_info_fn_,
+                            mpi_comm_dup_with_info_fn__,
+                            ompi_comm_dup_with_info_fn_f,
+                            (MPI_Fint* comm, MPI_Fint* comm_keyval, MPI_Aint* extra_state, MPI_Aint* attribute_val_in, MPI_Aint* attribute_val_out, ompi_fortran_logical_t* flag, MPI_Fint* ierr),
+                            (comm, comm_keyval, extra_state, attribute_val_in, attribute_val_out, flag, ierr) )
+OMPI_GENERATE_F77_BINDINGS( MPI_COMM_IDUP_FN,
+                            mpi_comm_idup_fn,
+                            mpi_comm_idup_fn_,
+                            mpi_comm_idup_fn__,
+                            ompi_comm_idup_fn_f,
+                            (MPI_Fint* comm, MPI_Fint* comm_keyval, MPI_Aint* extra_state, MPI_Aint* attribute_val_in, MPI_Aint* attribute_val_out, ompi_fortran_logical_t* flag, MPI_Fint* ierr),
+                            (comm, comm_keyval, extra_state, attribute_val_in, attribute_val_out, flag, ierr) )
 OMPI_GENERATE_F77_BINDINGS( MPI_NULL_DELETE_FN,
                             mpi_null_delete_fn,
                             mpi_null_delete_fn_,
@@ -187,6 +214,8 @@ OMPI_GENERATE_F77_BINDINGS( MPI_WIN_DUP_FN,
  *   MPI_COMM_NULL_DELETE_FN -> OMPI_C_MPI_COMM_NULL_DELETE_FN
  *   MPI_COMM_NULL_COPY_FN -> OMPI_C_MPI_COMM_NULL_COPY_FN
  *   MPI_COMM_DUP_FN -> OMPI_C_MPI_COMM_DUP_FN
+ *   MPI_COMM_DUP_WITH_INFO_FN -> OMPI_C_MPI_COMM_DUP_WITH_INFO_FN
+ *   MPI_COMM_IDUP_FN -> OMPI_C_MPI_COMM_IDUP_FN
  *
  *   MPI_WIN_NULL_DELETE_FN -> OMPI_C_MPI_WIN_NULL_DELETE_FN
  *   MPI_WIN_NULL_COPY_FN -> OMPI_C_MPI_WIN_NULL_COPY_FN
@@ -244,6 +273,28 @@ void ompi_comm_dup_fn_f(MPI_Fint* comm, MPI_Fint* comm_keyval,
                         MPI_Aint* attribute_val_in, 
                         MPI_Aint* attribute_val_out, 
                         ompi_fortran_logical_t* flag, MPI_Fint* ierr)
+{
+    *flag = (ompi_fortran_logical_t) 1;
+    *attribute_val_out = *attribute_val_in;
+    *ierr = OMPI_INT_2_FINT(MPI_SUCCESS);
+}
+
+void ompi_comm_dup_with_info_fn_f(MPI_Fint* comm, MPI_Fint* comm_keyval,
+                                  MPI_Aint* extra_state,
+                                  MPI_Aint* attribute_val_in,
+                                  MPI_Aint* attribute_val_out,
+                                  ompi_fortran_logical_t* flag, MPI_Fint* ierr)
+{
+    *flag = (ompi_fortran_logical_t) 1;
+    *attribute_val_out = *attribute_val_in;
+    *ierr = OMPI_INT_2_FINT(MPI_SUCCESS);
+}
+
+void ompi_comm_idup_fn_f(MPI_Fint* comm, MPI_Fint* comm_keyval,
+                         MPI_Aint* extra_state,
+                         MPI_Aint* attribute_val_in,
+                         MPI_Aint* attribute_val_out,
+                         ompi_fortran_logical_t* flag, MPI_Fint* ierr)
 {
     *flag = (ompi_fortran_logical_t) 1;
     *attribute_val_out = *attribute_val_in;
