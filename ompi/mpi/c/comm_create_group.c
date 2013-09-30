@@ -53,6 +53,10 @@ int MPI_Comm_create_group (MPI_Comm comm, MPI_Group group, int tag, MPI_Comm *ne
             return OMPI_ERRHANDLER_INVOKE(MPI_COMM_WORLD, MPI_ERR_COMM,
                                           FUNC_NAME);
 
+        if (tag < 0 || tag > mca_pml.pml_max_tag)
+            return OMPI_ERRHANDLER_INVOKE(comm, MPI_ERR_TAG,
+                                          FUNC_NAME);
+
         if ( NULL == group )
             return OMPI_ERRHANDLER_INVOKE(comm, MPI_ERR_GROUP,
                                           FUNC_NAME);
